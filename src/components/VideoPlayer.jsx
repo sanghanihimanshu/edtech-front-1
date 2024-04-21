@@ -6,16 +6,44 @@
 //     <Replay source={src} initialPlaybackProps={{ isPaused: true }}>
 //       <CompoundVideoStreamer />
 //     </Replay>
-//   );
+//   ); 
 // };
+
+
 import React from "react";
 import { Searchbar } from "./Searchbar";
 import logo from "../assets/edtech-logo.svg";
 import { VideoCardsSm } from "./VideoCardsSm";
 import RadioButton from "./RadioButton";
 import ReactPlayer from "react-player";
+import { useQueryClient,useQuery} from "react-query";
+import axios from "axios";
 export const VideoPlayer = ({ src }) => {
+
+
+  const QueryClient = useQueryClient()
+  const { isLoading, data:quizdata, error, isError } = useQuery(['quiz'], async () => {
+    return await axios.post(`https://3ee8-34-16-230-37.ngrok-free.app/process`,{
+        'keyid': "java",
+    })
+  }, {
+    onSuccess: () => {
+      console.log(quizdata)
+    }
+  })
+
+  if (isLoading) {
+
+    return <h1>Loading please wait</h1>
+  }
+  if (isError) {
+    return (<h1>{error.message}</h1>)
+  }
+
+
+
   return (
+    
     <div className="flex flex-row w-full h-full justify-between">
       <div className="flex w-4/6 flex-col gap-4 overflow-auto">
         <div className="flex flex-row justify-center items-center">

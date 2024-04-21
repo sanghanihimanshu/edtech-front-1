@@ -7,7 +7,8 @@ import { VideoPlayer } from "./components/VideoPlayer";
 import { VideoUpload } from "./components/VideoUpload";
 import { Hero } from "./containers/Hero";
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
-
+import {ReactQueryDevtools} from 'react-query/devtools'
+import { QueryClient,QueryClientProvider } from "react-query";
 
 const App = ()=> {
   const router=createBrowserRouter([
@@ -42,6 +43,9 @@ const App = ()=> {
     }
 
 ])
+
+const queryClient=new QueryClient()
+
   return (
     <>
       {/* <Navbar /> */}
@@ -52,7 +56,10 @@ const App = ()=> {
       {/* <VideoUpload /> */}
       {/* <CourseCreate /> */}
       {/* <VideoPlayer src="https://dyznew8dbds5w.cloudfront.net/java/output.mpd" /> */}
+      <QueryClientProvider client={queryClient}>
       <RouterProvider router={router}/>
+      <ReactQueryDevtools intialIsOpen={false} position="bottom-right"/>
+      </QueryClientProvider>
     </>
   );
 }

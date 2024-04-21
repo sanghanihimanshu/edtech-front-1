@@ -1,22 +1,32 @@
-import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
+// import { useAtom } from "jotai";
 import React, { useState } from "react";
+// import { userAtom } from "../atom/authatoms";
+import { useMutation } from "react-query";
 
 export const Login = () => {
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    window.alert("User Logged in Successfully");
-    console.log(email);
-    setEmail("");
-    setPass("");
-  };
-  const mutation = useMutation(
-    axios.post("http://localhost:5000/auth/login", { email, password: pass },)
+  // const [getauth,setAuth] = useAtom(userAtom)
+  
+  const loginMutation = useMutation(
+    async ({ email, password }) => {
+      const response = await axios.post("http://localhost:4000/auth/login", { email, password });
+      return response.data;
+    },
+    {
+      onSuccess: (data) => {
+        console.log("Login successful, token:", data);
+        // storeTokenInDatabase(data);
+      },
+      onError: (error) => {
+        console.error('Error logging in:', error.message);
+      },
+    }
   );
-  const handlesubmit=()=>{
-    mutation.mutate()
+ 
+  const handlesubmit = () => {
+    loginMutation.mutate({email,password:pass})
   }
   return (
     <>
@@ -35,7 +45,7 @@ export const Login = () => {
             </div>
 
             <div className="p-4 md:p-5">
-              <div className="space-y-4">
+              <div className="space-y-4" >
                 <div>
                   <label
                     htmlFor="email"
@@ -75,9 +85,8 @@ export const Login = () => {
                   />
                 </div>
                 <button
-                  type="submit"
                   className="w-full text-white mt-2 bg-blue-700 hover:bg-blue-800  focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 "
-                  onClick={handleSubmit}
+                  onClick={()=>handlesubmit()}
                 >
                   Login to your account
                 </button>
