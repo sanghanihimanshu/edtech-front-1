@@ -1,7 +1,17 @@
 import React from "react";
-import logo from "../assets/edtech-logo.svg";
+import { useAtom } from "jotai";
+import { userAtom } from "../atoms/atom";
+import { useQuery } from "react-query";
+import axios from "axios";
 import { ChannelName } from "./ChannelName";
+import logo from "../assets/edtech-logo.svg";
 export const SidePanel = () => {
+  
+  const getUser =useAtom(userAtom)[0];
+  const {data:Usercoursess} = useQuery(['userCourses'], async () => {
+    return (await axios.get(`http://localhost:5000/usercourse/get?userId=`+getUser.id)).data
+  })
+  console.log(Usercoursess);
   return (
     <>
       <div className="h-screen w-1/6 fixed">
@@ -15,13 +25,12 @@ export const SidePanel = () => {
           </span>
         </a>
         <div className="mt-10 font-medium text-lg">Courses Enrolled</div>
-        <ChannelName />
-        <ChannelName />
-        <ChannelName />
-        <ChannelName />
-        <ChannelName />
-        <ChannelName />
-        <ChannelName />
+        {
+          Usercoursess?.map((info)=>{
+            console.log(info);
+            return <ChannelName courseId={info.courseId}/>
+          })
+        }
       </div>
     </>
   );

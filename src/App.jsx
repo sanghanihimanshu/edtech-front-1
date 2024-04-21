@@ -7,44 +7,55 @@ import { VideoPlayer } from "./components/VideoPlayer";
 import { VideoUpload } from "./components/VideoUpload";
 import { Hero } from "./containers/Hero";
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
-import {ReactQueryDevtools} from 'react-query/devtools'
-import { QueryClient,QueryClientProvider } from "react-query";
+import { ReactQueryDevtools } from 'react-query/devtools'
+import { QueryClient, QueryClientProvider } from "react-query";
+import { ViewCourse } from "./components/ViewCourse";
 
-const App = ()=> {
-  const router=createBrowserRouter([
-    
-    {
-      path:'/register',
-      element:<Register/>
-    },
-    {
-      path:'/login',
-      element:<Login/>
-    },
-    {
-      path:'/',
-      element:<><Navbar/><Landing/></>
-    },
-    {
-      path:'/hero',
-      element:<Hero/>
-    },
-    {
-      path:'/videoUpload',
-      element:<VideoUpload/>
-    },
-    {
-      path:'/coursecreate',
-      element:<CourseCreate/>
-    },
-    {
-      path:'/videoplayer',
-      element:<VideoPlayer/>
-    }
+const App = () => {
+  const router = createBrowserRouter([
 
-])
+    {
+      path: '/register',
+      element: <Register />
+    },
+    {
+      path: '/login',
+      element: <Login />
+    },
+    {
+      path: '/',
+      element: <><Navbar /><Landing /></>
+    },
+    {
+      path: '/hero',
+      element: <Hero />
+    },
+    {
+      path: '/videoUpload',
+      element: <VideoUpload />
+    },
+    {
+      path: '/coursecreate',
+      element: <CourseCreate />
+    },
+    {
+      path: '/videoplayer',
+      element: <VideoPlayer />
+    },
+    {
+      path: "/:courseId",
+      element: <ViewCourse />,
+      children: [
+        {
+          path: ":videoId",
+          element: <VideoPlayer />,
+        }
+      ]
+    },
 
-const queryClient=new QueryClient()
+  ])
+
+  const queryClient = new QueryClient()
 
   return (
     <>
@@ -57,8 +68,8 @@ const queryClient=new QueryClient()
       {/* <CourseCreate /> */}
       {/* <VideoPlayer src="https://dyznew8dbds5w.cloudfront.net/java/output.mpd" /> */}
       <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router}/>
-      <ReactQueryDevtools intialIsOpen={false} position="bottom-right"/>
+        <RouterProvider router={router} />
+        <ReactQueryDevtools intialIsOpen={false} position="bottom-right" />
       </QueryClientProvider>
     </>
   );

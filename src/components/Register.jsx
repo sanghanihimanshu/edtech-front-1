@@ -1,26 +1,34 @@
 import React, { useState } from "react";
 import home from "../assets/home-illustration.svg";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import { useMutation } from "react-query";
 
 export const Register = () => {
   const [uname, setUname] = useState("");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
-  const [cpass, setCpass] = useState("");
   const [tutor, setTutor] = useState(false);
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    window.alert("User Registered Successfully");
-    // console.log(uname);
-    // console.log(pass);
-    // console.log(tutor);
-    setUname("");
-    setName("");
-    setEmail("");
-    setPass("");
-    setCpass("");
-    setTutor(false);
+  const navigate =useNavigate();
+  const registerMutation = useMutation(
+    async ({ email, password, username ,name , isTutor }) => {
+      const response = await axios.post("http://localhost:5000/auth/register", { email, password ,username,name,isTutor});
+      return response.data;
+    },
+    {
+      onSuccess: (data) => {
+        alert(data.message);
+       navigate('/login');
+     
+      },
+      onError: (error) => {
+        alert('Error logging in:', error.message);
+      },
+    }
+  );
+  const handleSubmit = () => {
+    registerMutation.mutate({ email:email, password:pass, username:uname ,name:name , isTutor:tutor })
   };
   return (
     <>
@@ -55,7 +63,7 @@ export const Register = () => {
             </div>
 
             <div className="p-4 md:p-5">
-              <form className="space-y-4" action="#">
+              <div className="space-y-4">
                 <div>
                   <label
                     htmlFor="uname"
@@ -128,24 +136,6 @@ export const Register = () => {
                     }}
                   />
                 </div>
-                <div>
-                  <label
-                    htmlFor="cpassword"
-                    className="block mb-2 text-sm font-medium text-gray-900"
-                  >
-                    Confirm Password
-                  </label>
-                  <input
-                    type="password"
-                    id="cpassword"
-                    placeholder="••••••••"
-                    className="bg-gray-50 border border-black text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                    value={cpass}
-                    onChange={(e) => {
-                      setCpass(e.target.value);
-                    }}
-                  />
-                </div>
                 <input
                   id="checkbox-item-1"
                   type="checkbox"
@@ -164,7 +154,6 @@ export const Register = () => {
                 </label>
 
                 <button
-                  type="submit"
                   onClick={handleSubmit}
                   className="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                 >
@@ -172,14 +161,14 @@ export const Register = () => {
                 </button>
                 <div className="text-sm font-medium text-gray-500 dark:text-black">
                   Already registered?
-                  <a
-                    href="/"
+                  <Link
+                    to="/login"
                     className="text-blue-700 ms-1 hover:underline dark:text-blue-500"
                   >
                     Login
-                  </a>
+                  </Link>
                 </div>
-              </form>
+              </div>
             </div>
           </div>
         </div>

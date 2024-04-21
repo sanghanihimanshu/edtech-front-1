@@ -1,26 +1,30 @@
 import axios from "axios";
-// import { useAtom } from "jotai";
+import { useAtom } from "jotai";
 import React, { useState } from "react";
-// import { userAtom } from "../atom/authatoms";
+import { userAtom } from "../atoms/atom";
 import { useMutation } from "react-query";
+import { useNavigate } from "react-router-dom";
 
 export const Login = () => {
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
-  // const [getauth,setAuth] = useAtom(userAtom)
-  
+  const [getauth,setAuth] = useAtom(userAtom)
+  const navigate =useNavigate();
   const loginMutation = useMutation(
     async ({ email, password }) => {
-      const response = await axios.post("http://localhost:4000/auth/login", { email, password });
+      const response = await axios.post("http://localhost:5000/auth/login", { email, password });
       return response.data;
     },
     {
       onSuccess: (data) => {
         console.log("Login successful, token:", data);
-        // storeTokenInDatabase(data);
+        window.localStorage.setItem("token",data.token)
+       setAuth(data.user)
+       navigate('/hero');
+     
       },
       onError: (error) => {
-        console.error('Error logging in:', error.message);
+        alert('Error logging in:', error.message);
       },
     }
   );

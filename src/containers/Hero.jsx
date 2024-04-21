@@ -2,11 +2,17 @@ import React from "react";
 import { VideoCards } from "../components/VideoCards";
 import { Searchbar } from "../components/Searchbar";
 import { SidePanel } from "../components/SidePanel";
+import { useAtom } from "jotai";
+import { userAtom } from "../atoms/atom";
+import { useQuery } from "react-query";
+import axios from "axios";
 
 export const Hero = () => {
 
-  
-
+  const getUser =useAtom(userAtom)[0];
+  const { isLoading, data:coursess, error, isError } = useQuery(['courses'], async () => {
+    return (await axios.get(`http://localhost:5000/course/get`)).data
+  })
   return (
     <>
       <div className="flex flex-row">
@@ -22,9 +28,11 @@ export const Hero = () => {
               Logout
             </span>
           </div>
-          <VideoCards />
-          <VideoCards />
-          <VideoCards />
+          {
+            coursess?.map((info)=>{
+              return <VideoCards name={info.name} description={info.description} username={info.username} courseId={info._id}/>
+            })
+          }
         </div>
       </div>
     </>

@@ -1,13 +1,11 @@
 import React from "react";
 import home from "../assets/home-illustration.svg";
 import logo from "../assets/edtech-logo.svg";
+import { Link } from "react-router-dom";
 
 export const VideoCards = () => {
   return (
-    <a
-      href="/"
-      className="flex flex-col items-center h-[275px] bg-white border border-gray-200 rounded-lg shadow md:flex-row w-[1200px] hover:bg-gray-100"
-    >
+    <div className="flex flex-col items-center h-[275px] bg-white border border-gray-200 rounded-lg shadow md:flex-row w-[1200px]">
       <img
         className="object-cover rounded-t-lg md:h-[250px] md:w-[400px] border-2 border-gray-100 rounded-lg ms-4"
         src={home}
@@ -39,7 +37,15 @@ export const VideoCards = () => {
           Here are the biggest enterprise technology acquisitions of 2021 so
           far, in reverse chronological order.
         </p>
+        <div className="flex flex-row">
+          <Link to="/viewCourse">
+          
+          </Link>
+          <button className="mt-3 w-[150px] h-[35px] border-2 border-gray-300 rounded-lg hover:bg-gray-300 hover:border-gray-700">
+            Enroll Now!
+          </button>
+        </div>
       </div>
-    </a>
+    </div>
   );
 };
