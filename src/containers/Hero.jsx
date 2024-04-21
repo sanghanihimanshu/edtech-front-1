@@ -4,6 +4,9 @@ import { Searchbar } from "../components/Searchbar";
 import { SidePanel } from "../components/SidePanel";
 
 export const Hero = () => {
+
+  
+
   return (
     <>
       <div className="flex flex-row">

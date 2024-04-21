@@ -10,7 +10,7 @@ export const SidePanel = () => {
           className="flex items-center space-x-3 mt-4 rtl:space-x-reverse"
         >
           <img src={logo} className="h-8" alt="Edtech" />
-          <span className="self-center text-2xl font-semibold whitespace-nowrap text-black">
+          <span className="self-center te xt-2xl font-semibold whitespace-nowrap text-black">
             EdTech
           </span>
         </a>
