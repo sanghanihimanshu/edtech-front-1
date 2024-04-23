@@ -39,20 +39,13 @@ const App = () => {
       element: <CourseCreate />
     },
     {
-      path: '/videoplayer',
-      element: <VideoPlayer />
-    },
-    {
       path: "/:courseId",
       element: <ViewCourse />,
-      children: [
-        {
-          path: ":videoId",
-          element: <VideoPlayer />,
-        }
-      ]
     },
-
+    {
+      path: "/video/:videoId",
+      element: <VideoPlayer />,
+    }
   ])
 
   const queryClient = new QueryClient()

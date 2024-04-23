@@ -3,7 +3,7 @@ import { useAtom } from "jotai";
 import React, { useState } from "react";
 import { userAtom } from "../atoms/atom";
 import { useMutation } from "react-query";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export const Login = () => {
   const [email, setEmail] = useState("");
@@ -96,12 +96,12 @@ export const Login = () => {
                 </button>
                 <div className="text-sm font-medium text-gray-500 dark:text-black">
                   Not registered?
-                  <a
-                    href="/"
+                  <Link
+                    to="/register"
                     className="text-blue-700 ms-1 hover:underline dark:text-blue-500"
                   >
                     Create account
-                  </a>
+                  </Link>
                 </div>
               </div>
             </div>

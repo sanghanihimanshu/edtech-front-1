@@ -1,11 +1,12 @@
 import home from "../assets/home-illustration.svg";
 import logo from "../assets/edtech-logo.svg";
 import React from "react";
+import { Link } from "react-router-dom";
 
 export const VideoCardsSm = () => {
   return (
     <>
-      <a
+      <Link
         href="/"
         className="flex flex-col items-center h-[125px] bg-white border border-gray-200 rounded-lg shadow md:flex-row w-[510px] hover:bg-gray-100 mb-3"
       >
@@ -31,7 +32,7 @@ export const VideoCardsSm = () => {
             far, in reverse chronological order.
           </p>
         </div>
-      </a>
+      </Link>
     </>
   );
 };

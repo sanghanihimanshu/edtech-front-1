@@ -1,9 +1,37 @@
 import React from "react";
 import home from "../assets/home-illustration.svg";
 import logo from "../assets/edtech-logo.svg";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useMutation, useQueryClient } from "react-query";
+import axios from "axios";
+import { userAtom } from "../atoms/atom";
+import { useAtom } from "jotai";
 
-export const VideoCards = () => {
+export const VideoCards = ({name,description,username,courseId}) => {
+  const navigate =useNavigate();
+  const getUser = useAtom(userAtom)[0]
+  const queryclient = useQueryClient();
+  const NewCourse = useMutation(
+    async ({ courseId, userId}) => {
+      const response = await axios.post("http://localhost:5000/usercourse/new", { courseId, userId });
+      return response.data;
+    },
+    {
+      onSuccess: () => {
+      alert('Successfully enrolled');
+      queryclient.invalidateQueries(['userCourses'])
+       navigate('/'+courseId);
+     
+      },
+      onError: (error) => {
+        alert('Error logging in:', error.message);
+      },
+    }
+  );
+ 
+  const handlesubmit = (courseId) => {
+    NewCourse.mutate({courseId,userId:getUser.id})
+  }
   return (
     <div className="flex flex-col items-center h-[275px] bg-white border border-gray-200 rounded-lg shadow md:flex-row w-[1200px]">
       <img
@@ -13,7 +41,7 @@ export const VideoCards = () => {
       />
       <div className="flex flex-col h-full content-start p-6 leading-normal">
         <h5 className="mb-2 text-2xl font-medium tracking-tight text-gray-900">
-          Noteworthy technology acquisitions 2021
+          {name}
         </h5>
 
         <div className="flex flex-row">
@@ -30,18 +58,19 @@ export const VideoCards = () => {
             alt="profile"
           />
           <span className="self-center ms-2 text-sm text-gray-600">
-            CodeWithRaees
+            {username}
           </span>
         </div>
         <p class="mt-3 text-sm text-gray-700">
-          Here are the biggest enterprise technology acquisitions of 2021 so
-          far, in reverse chronological order.
+         {description}
         </p>
         <div className="flex flex-row">
-          <Link to="/viewCourse">
-          
+          <Link to={"/"+courseId}>
+            <button className="mt-3 me-3 w-[150px] h-[35px] border-2 border-gray-300 rounded-lg hover:bg-gray-300 hover:border-gray-700">
+              View Course
+            </button>
           </Link>
-          <button className="mt-3 w-[150px] h-[35px] border-2 border-gray-300 rounded-lg hover:bg-gray-300 hover:border-gray-700">
+          <button className="mt-3 w-[150px] h-[35px] border-2 border-gray-300 rounded-lg hover:bg-gray-300 hover:border-gray-700" onClick={()=>handlesubmit(courseId)}>
             Enroll Now!
           </button>
         </div>

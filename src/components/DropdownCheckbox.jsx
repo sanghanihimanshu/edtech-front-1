@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-export const DropdownCheckbox = (props) => {
+export const DropdownCheckbox = ({ courses, setCourses, getcourses }) => {
   const [val, setVal] = useState("hidden");
 
   const handleClick = () => {
@@ -15,11 +15,11 @@ export const DropdownCheckbox = (props) => {
       <button
         id="dropdownCheckboxButton"
         data-dropdown-toggle="dropdownDefaultCheckbox"
-        className="text-white absolute top-[480px] mt-5 mb-2 w-[250px] bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+        className="text-black absolute top-[480px] mt-5 mb-2 w-[250px] bg-gray-300 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center"
         type="button"
         onClick={handleClick}
       >
-        {props.courses.size === 0 ? "Select Course" : "Courses Selected"}
+        {courses?.length === 0 ? "Select Course" : "Courses Selected"}
         <svg
           className="w-2.5 h-2.5 ms-3"
           aria-hidden="true"
@@ -45,28 +45,28 @@ export const DropdownCheckbox = (props) => {
           className="p-3 space-y-3 text-sm text-gray-700 dark:text-gray-200"
           aria-labelledby="dropdownCheckboxButton"
         >
-          <li>
-            <div className="flex items-center cursor-pointer">
-              <input
-                id="checkbox-item-1"
-                type="checkbox"
-                value="Course 1"
-                className="w-4 h-4 text-blue-600 bg-white border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 bg-white border-gray-500"
-                onChange={(e) => {
-                  if (props.courses.has(e.target.value))
-                    props.courses.delete(e.target.value);
-                  else props.setCourses(props.courses.add(e.target.value));
-                  // console.log(courses);
-                }}
-              />
-              <label
-                htmlFor="checkbox-item-1"
-                className="ms-2 text-sm font-medium text-black"
-              >
-                Course 1
-              </label>
-            </div>
-          </li>
+          {
+            courses?.map((info) => (<li>
+              <div className="flex items-center cursor-pointer">
+                <input
+                  id="checkbox-item-1"
+                  type="checkbox"
+                  value="Course 1"
+                  className="w-4 h-4 text-blue-600 bg-white border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 bg-white border-gray-500"
+                  onChange={(e) => {
+                    setCourses(info._id);
+                    // console.log(courses);
+                  }}
+                  checked={info._id==getcourses}
+                />
+                <label
+                  htmlFor="checkbox-item-1"
+                  className="ms-2 text-sm font-medium text-black"
+                >
+                  {info.name}
+                </label>
+              </div></li>))
+          }
         </ul>
       </div>
     </>

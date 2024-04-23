@@ -4,18 +4,18 @@ import { userAtom } from "../atoms/atom";
 import { useQuery } from "react-query";
 import axios from "axios";
 import { ChannelName } from "./ChannelName";
-import logo from "../assets/edtech-logo.svg";
+import logo from "../assets/new_logo.png";
+import { Link } from "react-router-dom";
 export const SidePanel = () => {
   
   const getUser =useAtom(userAtom)[0];
   const {data:Usercoursess} = useQuery(['userCourses'], async () => {
     return (await axios.get(`http://localhost:5000/usercourse/get?userId=`+getUser.id)).data
   })
-  console.log(Usercoursess);
   return (
     <>
       <div className="h-screen w-1/6 fixed">
-        <a
+        <Link
           href="/"
           className="flex items-center space-x-3 mt-4 rtl:space-x-reverse"
         >
@@ -23,11 +23,10 @@ export const SidePanel = () => {
           <span className="self-center te xt-2xl font-semibold whitespace-nowrap text-black">
             EdTech
           </span>
-        </a>
+        </Link>
         <div className="mt-10 font-medium text-lg">Courses Enrolled</div>
         {
           Usercoursess?.map((info)=>{
-            console.log(info);
             return <ChannelName courseId={info.courseId}/>
           })
         }
